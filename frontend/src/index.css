@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    color-scheme: dark;
+}
+
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0d1117;
+    color: #fff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1f2b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2d3748;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4a5568;
+}
+
+.noSpinButtons {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.noSpinButtons::-webkit-inner-spin-button,
+.noSpinButtons::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media screen and (min-width: 640px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+}
+
+@font-face {
+    font-family: "Test Untitled Sans";
+    src: url("/src/assets/test-untitled-sans-regular.woff2") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Test Untitled Sans";
+    src: url("/src/assets/test-untitled-sans-bold.woff2") format("woff");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Test Untitled Sans";
+    src: url("/src/assets/test-untitled-sans-medium.woff2") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
