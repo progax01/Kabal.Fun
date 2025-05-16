@@ -10,6 +10,7 @@ This directory contains the frontend application for the Kabal Fund protocol. Th
 https://kabalfun.netlify.app/
 
 
+
 ## 📋 Key Features
 
 - **Fund Discovery**: Browse and search for active funds
@@ -18,6 +19,7 @@ https://kabalfun.netlify.app/
 - **Governance Visualization**: View active and past polls with results
 - **Performance Tracking**: Monitor fund trading history and performance
 - **Telegram Integration**: Seamless redirection to Telegram for voting
+
 
 ## 🛠️ Technical Architecture
 
