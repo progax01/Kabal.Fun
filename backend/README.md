@@ -1,127 +1,114 @@
-# Kabal Fund Backend
+# Solana Hedge Fund Backend
 
-> Node.js backend service with Telegram bot integration for decentralized fund governance
+## Overview
 
-This directory contains the backend services for the Kabal Fund protocol. The backend is responsible for managing the Telegram bot integration, synchronizing on-chain fund data, and facilitating the governance process through polls.
+This backend system powers a Solana-based hedge fund platform, enabling fund creation, asset management, transaction tracking, and performance analytics. The system uses Solana wallet signatures for secure authentication and provides comprehensive APIs for fund management and investment operations.
 
-## 📋 Key Components
+## Core Features
 
-- **Telegram Bot Service**: Creates and manages fund-specific Telegram groups
-- **Blockchain Listener**: Monitors on-chain events and updates the database
-- **API Service**: Exposes REST endpoints for the frontend
-- **Poll Management**: Creates, tracks, and closes polls for fund governance
+- **Fund Management**: Create and manage hedge funds with detailed information
+- **Asset Tracking**: Monitor fund assets and portfolio composition
+- **Transaction Processing**: Handle buy and sell transactions with fee calculations
+- **User Holdings**: Track individual user investments across funds
+- **Performance Analytics**: Generate time-series data for AUM and token price
+- **Wallet Authentication**: Secure user authorization via Solana wallet signatures
+- **Advanced Fund Filtering**: Sort funds by various criteria (trending, fundraising progress, price)
+- **Token Price Integration**: Real-time token pricing via CoinMarketCap API
+- **Blockchain Integration**: Direct interaction with Solana for token metadata
 
-## 🛠️ Technical Architecture
+## Technical Architecture
 
-### System Overview
+The backend is built using:
+- **Node.js** with TypeScript for type safety
+- **MongoDB** for data storage with Mongoose ODM
+- **Solana Web3.js** for blockchain interactions
+- **Express.js** for API routing
+- **CoinMarketCap API** for token pricing
 
-```
-                   ┌─────────────────┐
-                   │  Solana Blockchain  │
-                   └─────────┬───────┘
-                             │
-                             ▼
-┌─────────────┐    ┌─────────────────┐    ┌─────────────┐
-│ Telegram API │◄──┤  Backend Service  │───►│   Database   │
-└─────────────┘    └─────────┬───────┘    └─────────────┘
-                             │
-                             ▼
-                   ┌─────────────────┐
-                   │  Frontend App     │
-                   └─────────────────┘
-```
+## Data Models
 
-### Core Services
+### Fund Model
+- Fund creator and basic details (name, ticker, description)
+- Fund identifiers (fundId, fundContractAddress, fundTokenAddress)
+- Financial parameters (targetRaiseAmount, managementFee, currentAUM)
+- Social media and website links
+- Status tracking (fundraising, trading, expired)
+- Lifecycle management (thresholdDeadline, expirationDate)
 
-- **Fund Service**: Manages fund creation and tracking
-- **Contributor Service**: Tracks contributors and their deposits
-- **Poll Service**: Manages the lifecycle of governance polls
-- **Telegram Service**: Handles bot interactions and group management
-- **Blockchain Service**: Interacts with Solana RPC nodes
+### User Holding Model
+- User investment tracking
+- Fund token balance
+- Initial investment amount
+- Entry price and token address
+- Last updated timestamp
 
-## 🚀 Development Setup
+### Ledger Model
+- Transaction history for buys and sells
+- Token information (address, symbol)
+- Price at transaction time
+- User and fund references
 
-### Prerequisites
+### Fund Price History Model
+- Time-series data for fund token prices
+- AUM tracking over time
 
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- [PostgreSQL](https://www.postgresql.org/) (v13+ recommended)
-- [Telegram Bot API Token](https://core.telegram.org/bots#creating-a-new-bot)
-- Solana RPC endpoint (Mainnet or Devnet)
+## Fund Lifecycle Management
 
-### Installation
+1. **Fundraising Phase**:
+   - Only SOL tokens accepted initially
+   - 3-day threshold deadline to meet minimum target
+   - Automatic status updates based on fundraising progress
 
-```bash
-# Install dependencies
-npm install
+2. **Trading Phase**:
+   - Begins when fundraising target is met
+   - Multiple token types accepted
+   - Full buy/sell functionality enabled
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your configuration
+3. **Expiration**:
+   - Funds expire after 3 months
+   - Automatic cleanup and status updates
 
-# Run database migrations
-npm run migrate
-
-# Start development server
-npm run dev
-```
-
-## 📝 API Endpoints
+## API Endpoints
 
 ### Fund Management
+- Create fund with logo upload
+- List funds with various filters (trending, fundraising, trading)
+- Search funds by name
+- Get fund details
 
-- `POST /api/funds`: Create a new fund
-- `GET /api/funds`: List all funds
-- `GET /api/funds/:fundId`: Get fund details
-- `GET /api/funds/:fundId/contributors`: List fund contributors
-- `GET /api/funds/:fundId/trades`: List fund trading history
+### Transaction Processing
+- Buy fund tokens with fee calculation
+- Sell fund tokens (trading phase only)
+- View transaction history
 
-### Polls and Governance
+### User Portfolio
+- View user holdings across funds
+- Track investment performance
 
-- `GET /api/funds/:fundId/polls`: List all polls for a fund
-- `GET /api/funds/:fundId/polls/:pollId`: Get poll details
-- `POST /api/funds/:fundId/polls`: Create a new poll (admin only)
-- `PUT /api/funds/:fundId/polls/:pollId/close`: Close an active poll (admin only)
+## Advanced Filtering and Sorting
 
-## 🤖 Telegram Bot Integration
+### Fundraising Funds
+- Most recent
+- Least/most progress toward target
+- Highest/lowest fundraising amount
 
-The Telegram bot automatically:
+### Trading Funds
+- Most recent
+- Highest/lowest token price
+- Highest/lowest AUM
 
-1. Creates a new group when a fund is created
-2. Adds the bot as an administrator
-3. Adds contributors to the group when they deposit
-4. Creates polls based on admin requests
-5. Processes and records votes
-6. Closes polls and submits results to the blockchain
+## Blockchain Integration
 
-### Bot Commands
+- Token metadata retrieval from Solana
+- Price fetching from CoinMarketCap
+- Transaction fee processing
 
-- `/create_poll [options]`: Create a new token selection poll (admin only)
-- `/fund_info`: Display current fund information and statistics
-- `/trades`: Show recent trading activity
-- `/contributors`: List current fund contributors
+## Getting Started
 
-## 🔄 Blockchain Integration
+### Prerequisites
+- Node.js (v14+)
+- MongoDB
+- Solana CLI tools (optional for local testing)
+- CoinMarketCap API key
 
-The backend maintains synchronization with the Solana blockchain through:
-
-1. **Event Listeners**: Monitor for fund creation, deposits, and trades
-2. **RPC Interactions**: Query fund states and account data
-3. **Transaction Submission**: Submit poll results to the blockchain for trade execution
-
-## 📊 Database Schema
-
-The Mongo database stores:
-
-- Fund metadata and configuration
-- Contributor information
-- Poll history and results
-- Telegram group mappings
-- Transaction history
-
-## 🔐 Security Considerations
-
-- All API endpoints require appropriate authentication
-- Admin-only functions require special verification
-- Telegram bot commands are restricted based on user roles
-- Signed transactions utilize proper key management
-
+### Environment Variables
